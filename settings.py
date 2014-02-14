@@ -1,4 +1,5 @@
 from __future__ import absolute_import, unicode_literals
+import os
 
 ######################
 # MEZZANINE SETTINGS #
@@ -103,7 +104,7 @@ ALLOWED_HOSTS = []
 # timezone as the operating system.
 # If running in a Windows environment this must be set to the same as your
 # system time zone.
-TIME_ZONE = None
+TIME_ZONE = "America/Denver"
 
 # If you set this to True, Django will use timezone-aware datetimes.
 USE_TZ = True
@@ -148,10 +149,25 @@ AUTHENTICATION_BACKENDS = ("mezzanine.core.auth_backends.MezzanineBackend",)
 # List of finder classes that know how to find static files in
 # various locations.
 STATICFILES_FINDERS = (
+    'compressor.finders.CompressorFinder',
     "django.contrib.staticfiles.finders.FileSystemFinder",
     "django.contrib.staticfiles.finders.AppDirectoriesFinder",
 #    'django.contrib.staticfiles.finders.DefaultStorageFinder',
 )
+
+import imp
+WIDGY_ROOT = imp.find_module('widgy')[1]
+SCSS_IMPORTS = (
+    os.path.join(WIDGY_ROOT, 'static', 'widgy', 'css'),
+)
+
+COMPRESS_PRECOMPILERS = (
+    ('text/x-scss', 'python -mscss.tool -C %s' %
+    ' '.join(['-I "%s"' %d for d in SCSS_IMPORTS])
+    ),
+)
+
+COMPRESS_ENABLED = True
 
 # The numeric mode to set newly-uploaded files to. The value should be
 # a mode you'd pass directly to os.chmod.
@@ -231,7 +247,6 @@ TEMPLATE_DIRS = (os.path.join(PROJECT_ROOT, "templates"),)
 ################
 
 INSTALLED_APPS = (
-    "django.contrib.admin",
     "django.contrib.auth",
     "django.contrib.contenttypes",
     "django.contrib.redirects",
@@ -250,6 +265,25 @@ INSTALLED_APPS = (
     "mezzanine.twitter",
     #"mezzanine.accounts",
     #"mezzanine.mobile",
+    'django.contrib.comments',
+    'django.contrib.sites',
+    'filebrowser_safe',
+    'grappelli_safe',
+
+    'widgy',
+    'widgy.contrib.page_builder',
+    'widgy.contrib.form_builder',
+    'widgy.contrib.widgy_mezzanine',
+
+    'filer',
+    'easy_thumbnails',
+    'compressor',
+    'argonauts',
+    'scss',
+    'sorl.thumbnail',
+    'south',
+
+    "django.contrib.admin",
 )
 
 # List of processors used by RequestContext to populate the context.
@@ -294,6 +328,15 @@ MIDDLEWARE_CLASSES = (
 # at the moment we are using custom forks of them.
 PACKAGE_NAME_FILEBROWSER = "filebrowser_safe"
 PACKAGE_NAME_GRAPPELLI = "grappelli_safe"
+ADMIN_MEDIA_PREFIX = STATIC_URL + "grappelli/"
+TESTING = False
+GRAPPELLI_INSTALLED = True
+
+WIDGY_MEZZANINE_SITE = 'demo.widgy_site.site'
+
+ADD_PAGE_ORDER = (
+    'widgy_mezzanine.WidgyPage',
+)
 
 #########################
 # OPTIONAL APPLICATIONS #

@@ -6,6 +6,7 @@ from django.contrib import admin
 
 from mezzanine.core.views import direct_to_template
 
+from demo.widgy_site import site as widgy_site
 
 admin.autodiscover()
 
@@ -69,7 +70,9 @@ urlpatterns += patterns('',
     # ``mezzanine.urls``, go right ahead and take the parts you want
     # from it, and use them directly below instead of using
     # ``mezzanine.urls``.
-    ("^", include("mezzanine.urls")),
+    url(r'^admin/widgy/', include(widgy_site.urls)),
+    url(r'^widgy/', include('widgy.contrib.widgy_mezzanine.urls')),
+    url(r"^", include("mezzanine.urls")),
 
     # MOUNTING MEZZANINE UNDER A PREFIX
     # ---------------------------------
