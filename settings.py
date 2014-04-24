@@ -332,7 +332,7 @@ ADMIN_MEDIA_PREFIX = STATIC_URL + "grappelli/"
 TESTING = False
 GRAPPELLI_INSTALLED = True
 
-WIDGY_MEZZANINE_SITE = 'demo.widgy_site.site'
+WIDGY_MEZZANINE_SITE = 'mezz-to-widgy.demo.widgy_site.site'
 
 ADD_PAGE_ORDER = (
     'widgy_mezzanine.WidgyPage',
