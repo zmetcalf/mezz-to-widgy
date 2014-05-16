@@ -283,7 +283,8 @@ INSTALLED_APPS = (
     'sorl.thumbnail',
     'south',
 
-    "django.contrib.admin",
+    'django.contrib.admin',
+    'mezz-to-widgy',
 )
 
 # List of processors used by RequestContext to populate the context.
